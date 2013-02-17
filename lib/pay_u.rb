@@ -1,7 +1,6 @@
 require 'active_support/core_ext'
 require 'active_support/inflector'
 require 'i18n'
-require 'pry'
 require 'pay_u/engine'
 
 module PayU
