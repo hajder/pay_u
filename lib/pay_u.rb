@@ -1,7 +1,10 @@
 require 'active_support/core_ext'
 require 'active_support/inflector'
 require 'i18n'
+
 require 'pay_u/engine'
+
+require 'pay_u/railtie' if defined?(Rails)
 
 module PayU
   mattr_accessor :service_url
@@ -10,8 +13,8 @@ module PayU
   mattr_accessor :encoding
   @@encoding = 'UTF'
   
-  mattr_accessor :payment_path
-  @@payment_path = 'NewPayment'
+  mattr_accessor :new_payment_path
+  @@new_payment_path = 'NewPayment'
   
   mattr_accessor :status_path
   @@status_path = 'Payment/get'
@@ -28,8 +31,8 @@ module PayU
   mattr_accessor :key2
   @@key2 = nil
   
-  def self.payment_url
-    @@service_url + '/' + @@encoding + '/' + @@payment_path
+  def self.new_payment_url
+    @@service_url + '/' + @@encoding + '/' + @@new_payment_path
   end
   
   def self.status_url
@@ -38,6 +41,14 @@ module PayU
 
   def self.setup
     yield self
+  end
+  
+  module ClassMethods
+    def has_payment
+      class_eval do
+        has_one :payment, :as => :payable, :class_name => 'PayU::Payment'
+      end
+    end
   end
 
 end

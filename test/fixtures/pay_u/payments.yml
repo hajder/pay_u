@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  session_id: MyString
+  pay_type: MyString
+  amount: 1
+  fresh: false
+  desc: MyString
+  status: 1
+  error_code: 1
+
+two:
+  session_id: MyString
+  pay_type: MyString
+  amount: 1
+  fresh: false
+  desc: MyString
+  status: 1
+  error_code: 1
