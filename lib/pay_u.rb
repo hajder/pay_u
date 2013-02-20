@@ -48,6 +48,7 @@ module PayU
     def has_payment
       class_eval do
         has_one :payment, :as => :payable, :class_name => 'PayU::Payment'
+        accepts_nested_attributes_for :payment
       end
     end
   end
