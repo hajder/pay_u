@@ -17,7 +17,20 @@ module PayU
     
     before_create :generate_session_id
     
-    MD5_ORDER = [:pos_id, :pay_type, :session_id, :pos_auth_key, :amount, :desc, :desc2, :trs_desc, :order_id, :first_name, :last_name, :payback_login, :street, :street_hn, :street_an, :city, :post_code, :country, :email, :phone, :language, :client_ip, :ts, :key1]
+    MD5_ORDER = [:pos_id, :pay_type, :session_id, :pos_auth_key, :amount, :desc,
+      :desc2, :trs_desc, :order_id, :first_name, :last_name, :payback_login,
+      :street, :street_hn, :street_an, :city, :post_code, :country, :email,
+      :phone, :language, :client_ip, :ts, :key1]
+    
+      
+    def update_status
+      self.status = PaymentStatus.new(self).status
+    end
+    
+    def update_status!
+      update_status
+      save!
+    end
     
     def to_hash
       self.ts ||= Time.now.to_i
@@ -43,6 +56,12 @@ module PayU
     def short_sig
       self.ts ||= Time.now.to_i
       ::Digest::MD5.hexdigest(pos_id + session_id + ts.to_s + key1)
+    end
+    
+    # Check if status ping from PayU is properly signed
+    def check_sig(their_ts, their_sig)
+      my_sig = ::Digest::MD5.hexdigest(pos_id + session_id + their_ts.to_s + key2)
+      my_sig == their_sig
     end
     
     def generate_session_id

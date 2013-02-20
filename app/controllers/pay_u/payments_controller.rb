@@ -14,7 +14,7 @@ module PayU
       unless sig_valid?
         raise ArgumentError.new('Invalid sig')
       end
-      SuckerPunch::Queue[:payu_status_queue].async.perform(params[:session_id])
+      PayU::Payment.find_by_session_id(params[:session_id]).update_status!
       
       render :text => 'ok'
     end

@@ -5,7 +5,7 @@ module PayU
     end
     
     def pay_u_payment_status_url(payment)
-      PayU.status_url + "/?pos_id=#{payment.pos_id}&session_id=#{payment.session_id}&sig=#{payment.short_sig}&ts=#{payment.ts}"
+      PayU::PaymentStatus.url(payment)
     end
   end
 end

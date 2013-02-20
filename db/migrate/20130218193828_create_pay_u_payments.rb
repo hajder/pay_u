@@ -1,5 +1,5 @@
 class CreatePayUPayments < ActiveRecord::Migration
-  def change
+  def up
     create_table :pay_u_payments do |t|
       t.string :payable_type
       t.integer :payable_id
@@ -7,12 +7,15 @@ class CreatePayUPayments < ActiveRecord::Migration
       t.string :pay_type
       t.integer :amount
       t.string :client_ip
-      t.boolean :fresh
       t.string :desc
-      t.integer :status
-      t.integer :error_code
+      t.string :status
+      t.string :error
 
       t.timestamps
     end
+  end
+  
+  def down
+    drop_table :pay_u_payments
   end
 end
