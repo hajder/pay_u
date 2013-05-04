@@ -1,25 +1,29 @@
+# encoding: utf-8
 module PayU
   class Error < StandardError
+    attr_reader :error_code
+    
     def self.exception(error_code)
       error_code = error_code.to_i
       case
       when error_code < 200
         PayU::InternalError.new(error_code)
-      when error_code.in? [200, 201]
+      when error_code.in?([200, 201])
         PayU::TransactionError.new(error_code)
-      when error_code.in? [501, 508]
+      when error_code.in?([501, 508])
         PayU::AuthorizationError.new(error_code)
-      when error_code.in? [599, 999]
+      when error_code.in?([599, 999])
         PayU::FatalError.new(error_code)
       when error_code < 300 || error_code >= 500
         PayU::ClientError.new(error_code)
       else
         raise StandardError, "Unknown error code: #{error_code}"
+      end
     end
     
     def initialize(error_code)
       @error_code = error_code
-      @message = ERROR_DESCRIPTIONS[error_code]
+      super(self.class::ERROR_DESCRIPTIONS[error_code])
     end
   
   end
