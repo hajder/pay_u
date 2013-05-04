@@ -3,6 +3,7 @@ require 'active_support/inflector'
 require 'i18n'
 
 require 'pay_u/engine'
+require 'pay_u/error'
 require 'pay_u/status'
 require 'pay_u/payment_status'
 require 'pay_u/railtie' if defined?(Rails)
