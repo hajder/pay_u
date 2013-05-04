@@ -49,6 +49,7 @@ module PayU
       class_eval do
         has_one :payment, :as => :payable, :class_name => 'PayU::Payment'
         accepts_nested_attributes_for :payment
+        attr_accessible :payment_attributes
         
         def self.find_by_payment_session_id(session_id)
           PayU::Payment.find_by_session_id(session_id).payable
